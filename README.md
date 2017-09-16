@@ -67,6 +67,7 @@ $ bundle install --without production
     - an `email address` (also of type string) that will double as a unique username
 
 `users` - table
+
 |id   |integer|
 |-----|-------|
 |name |string |
