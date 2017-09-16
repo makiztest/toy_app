@@ -281,3 +281,38 @@ $ rails db:migrate
 
 Implementing this constraint in Rails is easy with validations; to accept microposts with at most 140 characters (à la Twitter), we use a length validation.
 
+```rb
+# IN app/models/micropost.rb
+
+class Micropost < ApplicationRecord
+  validates :content, length: { maximum: 140 }
+end
+```
+> If you create a content that is more than 140 in length you will get an error.
+
+## A user `has_many` microposts
+
+Rails has the ability to form associations between different data models.
+
+```rb
+# IN app/models/user.rb
+
+class Micropost < ApplicationRecord
+  has_many :microposts
+end
+```
+
+```rb
+# IN app/models/micropost.rb
+
+class Micropost < ApplicationRecord
+  belongs_to :user
+  validates :content, length: { maximum: 140 }
+end
+```
+- we can examine the implications of the user-micropost association by using the console.
+
+```rb
+# TYPE IN TERMINAL
+$ rails console or rails c
+```
