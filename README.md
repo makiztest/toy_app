@@ -1,10 +1,15 @@
 # Chapter 2 - A Toy App
 ```scss
 // TYPE IN TERMINAL
-$ rails _5.1.2_ new toy_app
+$ rails _5.1.4_ new toy_app
 ```
 
-> generating the application skeleton using the rails new command with a specific Rails version number:
+> generating the application skeleton using the rails new command with a specific Rails version number
+
+---
+You should have the same Gemfile codes
+<details>
+<summary>Gemfile.rb</summary>
 
 ```rb
 source 'https://rubygems.org'
@@ -50,3 +55,20 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 $ bundle install --without production
 ```
 > We will install the local gems while suppressing the installation of production gems using the --without production option
+
+</details>
+
+---
+`Now we’re ready to start` making the app itself. The typical first step when making a web application is to `create a data model`. the toy app will be a Twitter-style microblog.
+## Model for Users
+- Users of our toy app will have a unique identifier
+    - `id` (of type integer)
+    - a publicly viewable `name` (of type string)
+    - an `email address` (also of type string) that will double as a unique username
+
+`users` - table
+|id   |integer|
+|-----|-------|
+|name |string |
+|email|string |
+
