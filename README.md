@@ -316,3 +316,21 @@ end
 # TYPE IN TERMINAL
 $ rails console or rails c
 ```
+
+```rb
+# IN app/models/user.rb
+
+class Micropost < ApplicationRecord
+  has_may :microposts
+  validates FILL_IN, presence: true    # Replace FILL_IN with the right code.
+  validates FILL_IN, presence: true    # Replace FILL_IN with the right code.
+end
+
+# this should be our code by replacing the 'FILL_IN'
+
+class Micropost < ApplicationRecord
+  has_may :microposts
+  validates :name, presence: true
+  validates :email, presence: true
+end
+```
