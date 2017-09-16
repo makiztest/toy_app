@@ -68,8 +68,6 @@ $ bundle install --without production
 
 `users` - table
 
-|users|
-|-------------|
 |id   |integer|
 |-----|-------|
 |name |string |
