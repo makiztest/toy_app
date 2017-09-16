@@ -313,11 +313,6 @@ end
 - we can examine the implications of the user-micropost association by using the console.
 
 ```rb
-# TYPE IN TERMINAL
-$ rails console or rails c
-```
-
-```rb
 # IN app/models/user.rb
 
 class Micropost < ApplicationRecord
@@ -334,3 +329,63 @@ class Micropost < ApplicationRecord
   validates :email, presence: true
 end
 ```
+
+- Edit the user show page to display the content of the user’s first micropost
+
+```rb
+# IN app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+#...
+
+  # find the user record
+  @user = User.find(params[:id])
+  @micropost = @user.microposts.first
+
+#...
+```
+```rb
+# TYPE IN A NEW TERMINAL
+
+$ rails console or rails s
+```
+For now we are assigning manually the users to the microposts
+
+```rb
+# IN rails console TYPE
+
+> first_user = User.first
+```
+We are assigning `first_user` as the `first user in our database`
+
+```rb
+# IN rails console TYPE
+
+> first_user.microposts
+```
+
+```rb
+> micropost = first_user.microposts.first
+```
+
+```rb
+# IN rails console TYPE
+
+> micropost.user
+```
+
+## <u>Inheritance hierarchies</u>
+
+### `Model Inheritance`
+- User model and the Micropost model inherit `(via the left angle bracket <)` from `ApplicationRecord`.
+
+  - Which in turn inherits from `ActiveRecord::Base`, which is the base class for models provided by Active Record.
+
+### `Controller Inheritance`
+- The inheritance structure for controllers is essentially the same as that for models.
+
+- Both the Users controller and the Microposts controller `inherit from the Application controller`.
+
+- ApplicationController itself `inherits from ActionController::Base`.
+  - which is the base class for controllers provided by the Rails library Action Pack.
