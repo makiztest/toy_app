@@ -389,3 +389,27 @@ We are assigning `first_user` as the `first user in our database`
 
 - ApplicationController itself `inherits from ActionController::Base`.
   - which is the base class for controllers provided by the Rails library Action Pack.
+
+## Deploying the toy app
+
+```scss
+// IN TERMINAL TYPE
+
+$ heroku create
+```
+
+```scss
+// IN TERMINAL TYPE
+
+$ git push heroku master
+```
+To get the application’s database to work, you’ll also have to migrate the production database
+
+```scss
+// IN TERMINAL TYPE
+
+$ heroku run rails db:migrate
+```
+> This updates the database at Heroku with the necessary user and micropost data models. After running the migration, you should be able to use the toy app in production, with a real PostgreSQL database back-end
+
+## THE END
