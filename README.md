@@ -73,3 +73,30 @@ $ bundle install --without production
 |name |string |
 |email|string |
 
+> Think of users as objects that can be created, read, updated, and deleted through the web via the HTTP protocol
+
+## Model for microposts
+- A micropost has only an `id` and a `content field` for the micropost’s `text`
+
+`microposts` - table
+
+|id      |integer |
+|--------|--------|
+|content |text    |
+|user_id |integer |
+
+> The `user_id` attribute allows us to `express` the notion that a `user` potentially `has many` associated `microposts`.
+
+## Rails scaffolding
+```rb
+# TYPE IN TERMINAL
+$ rails generate scaffold User name:string email:string
+```
+> By including `name:string` and `email:string`, we have arranged for the User model to have the form.
+
+Migrate the database created
+```rb
+# TYPE IN TERMINAL
+$ rails db:migrate
+```
+
