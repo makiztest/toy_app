@@ -12,6 +12,7 @@ You should have the same Gemfile codes
 <summary>Gemfile.rb</summary>
 
 ```rb
+# In /Gemfile.rb
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -60,7 +61,8 @@ $ bundle install --without production
 
 ---
 `Now we’re ready to start` making the app itself. The typical first step when making a web application is to `create a data model`. the toy app will be a Twitter-style microblog.
-## Model for Users
+
+## <u>Model for Users</u>
 - Users of our toy app will have a unique identifier
     - `id` (of type integer)
     - a publicly viewable `name` (of type string)
@@ -75,7 +77,7 @@ $ bundle install --without production
 
 > Think of users as objects that can be created, read, updated, and deleted through the web via the HTTP protocol
 
-## Model for microposts
+## <u>Model for microposts</u>
 - A micropost has only an `id` and a `content field` for the micropost’s `text`
 
 `microposts` - table
@@ -87,7 +89,7 @@ $ bundle install --without production
 
 > The `user_id` attribute allows us to `express` the notion that a `user` potentially `has many` associated `microposts`.
 
-## Rails scaffolding
+## <u>Rails scaffolding</u>
 ```rb
 # TYPE IN TERMINAL
 $ rails generate scaffold User name:string email:string
@@ -99,4 +101,145 @@ Migrate the database created
 # TYPE IN TERMINAL
 $ rails db:migrate
 ```
+## <u>Users URL - renders page</u>
 
+|URL          |Action  |Purpose                        |
+|-------------|--------|-------------------------------|
+|/users       |index   |page to `list all users`       |
+|/users/1     |show    |page to `show user with id 1`  |
+|/users/new   |new     |page to make a `new user`      |
+|/users/1/edit|edit    |page to `edit user` with `id 1`|
+
+> Now we can create, edit, delete, and see users.
+
+## <u>The Model-View-Controller (MVC) pattern</u>
+- Here is the steps how it happens
+1. The browser issues a request for the /users URL.
+2. Rails routes /users to the index action in the Users controller.
+3. The index action asks the User model to retrieve all users (User.all).
+4. The User model pulls all the users from the database.
+5. The User model returns the list of users to the controller.
+6. The controller captures the users in the @users variable, which is passed to the index view.
+8. The view uses embedded Ruby to render the page as HTML.
+9. The controller passes the HTML back to the browser.3
+
+```rb
+# In config/routes.rb
+
+#Rails.application.routes.draw do
+#  resources :users
+  root 'users#index'
+#end
+```
+> Associate the root route with the users index, so that “slash” goes to /users
+## <u>The Users controller in schematic form</u>
+> the `index`, `show`, `new`, and `edit` actions render pages.
+
+> `create`, `update`, and `destroy`. These actions don’t typically render pages (although they can); instead, their `main purpose is to modify information about users in the database`.
+```rb
+class UsersController < ApplicationController
+
+  def index     # page to `list all users` 
+  end
+
+  def show      # page to `show user with :id`
+  end
+
+  def new       # page to make a `new user` 
+  end
+
+  def edit      # page to `edit user with :id`
+  end 
+
+  def create    # page to `create a new user`
+  end
+
+  def update    # page to `update user with :id`
+  end
+
+  def destroy   # page to `delete user with :id`
+  end
+end
+```
+ > This represents the implementation of the `REST architecture` in Rails.
+
+ ## <u>`RESTful routes` provided `by the Users resource`</u>
+
+|HTTP  |URL          |Action |Purpose                        |
+|------|-------------|-------|-------------------------------|
+|GET   |/users       |index  |page to `list all users`       |
+|GET   |/users/1     |show   |page to `show user with id 1`  |
+|GET   |/users/new   |new    |page to make a `new user`      |
+|POST  |/users       |create |page to `create a new user`    |
+|GET   |/users/1/edit|edit   |page to `edit user with id 1` |
+|PATCH |/users/1     |update |page to `update user with id 1`|
+|DELETE|/users/1     |destroy|page to `delete user with id 1`|
+
+## <u>REpresentational State Transfer `(REST)`</u>
+
+As a Rails application developer, the RESTful style of development helps you make choices about which controllers and actions to write: you simply structure the application using resources that get created, read, updated, and deleted
+
+### Examine the relationship between the Users controller and the User model
+
+```rb
+# In app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+# ...
+
+  def index
+    @users = User.all
+  end
+  
+# ...
+end
+```
+
+ > This index action has the line `@users = User.all` which asks the User model to retrieve a list of all the users from the database, and then places them in the variable @users
+
+```rb
+# In app/models/user.rb
+
+class User < ApplicationRecord
+end
+```
+- Once the @users variable is defined, the controller calls the view. 
+    - Variables that start with the @ sign, called instance variables, are automatically available in the views.
+
+```rb
+# In app/views/users/index.html.erb
+
+# ...
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= user.email %></td>
+    <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Destroy', user, method: :delete,
+                                     data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+
+# ...
+```
+> The view converts its contents to HTML, which is then returned by the controller to the browser for display
+
+## <u>Weaknesses of this Users resource</u>
+
+1. **No data validations**. Our User model accepts data such as blank names and invalid email addresses without complaint.
+
+2. **No authentication**. We have no notion of logging in or out, and no way to prevent any user from performing any operation.
+
+3. **No tests**. This isn’t technically true—the scaffolding includes rudimentary tests—but the generated tests don’t test for data validation, authentication, or any other custom requirements.
+4. **No style or layout**. There is no consistent site styling or navigation.
+
+5. **No real understanding**. If you understand the scaffold code, you probably shouldn’t be reading this book.
+
+## <u>The Microposts resource</u>
+
+```rb
+# TYPE IN TERMINAL
+$ rails generate scaffold Micropost content:text user_id:integer
+```
