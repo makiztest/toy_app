@@ -1,4 +1,11 @@
 # Chapter 2 - A Toy App
+
+##### LEARN WEB DEVELOPMENT WITH RAILS - *by Michael Hartl*
+
+`I dont own any of the content of this. I'm just using this for educational purposes to teach myself about ruby on rails and i highly recommended it.`
+
+To learn more about this please go to this link [Ruby on Rails Tutorial by Michael Hartl](https://www.railstutorial.org/book)
+
 ```scss
 // TYPE IN TERMINAL
 $ rails _5.1.4_ new toy_app
@@ -7,7 +14,7 @@ $ rails _5.1.4_ new toy_app
 > generating the application skeleton using the rails new command with a specific Rails version number
 
 ---
-You should have the same Gemfile codes
+`You should have the same Gemfile codes`
 <details>
 <summary>Gemfile.rb</summary>
 
@@ -107,7 +114,7 @@ $ rails db:migrate
 |-------------|--------|-------------------------------|
 |/users       |index   |page to `list all users`       |
 |/users/1     |show    |page to `show user with id 1`  |
-|/users/new   |new     |page to make a `new user`      |
+|/users/new   |new     |page to `make a new user`      |
 |/users/1/edit|edit    |page to `edit user` with `id 1`|
 
 > Now we can create, edit, delete, and see users.
@@ -238,8 +245,39 @@ end
 5. **No real understanding**. If you understand the scaffold code, you probably shouldn’t be reading this book.
 
 ## <u>The Microposts resource</u>
+This will be the same as what we did with the User scaffold.
 
 ```rb
 # TYPE IN TERMINAL
 $ rails generate scaffold Micropost content:text user_id:integer
 ```
+Migrate the database created
+```rb
+# TYPE IN TERMINAL
+$ rails db:migrate
+```
+
+> Now we are in a position to create microposts in the same way we created users.
+
+> scaffold generator has updated the Rails routes file with a rule for Microposts resource.
+
+## `RESTful routes` provided by `the Microposts resource`
+
+|HTTP  |URL               |Action |Purpose                             |
+|------|------------------|-------|------------------------------------|
+|GET   |/microposts       |index  |page to `list all microposts`       |
+|GET   |/microposts/1     |show   |page to `show micropost with id 1`  |
+|GET   |/microposts/new   |new    |page to make a `new micropost`      |
+|POST  |/microposts       |create |page to `create a new micropost`    |
+|GET   |/microposts/1/edit|edit   |page to `edit micropost with id 1`  |
+|PATCH |/microposts/1     |update |page to `update micropost with id 1`|
+|DELETE|/microposts/1     |destroy|page to `delete micropost with id 1`|
+
+> The `Micropost controller` will have a `similar schematic form like the User controller`.
+
+> Go ahead and try the microposts routes and test it.
+
+## <u>Putting the micro in microposts</u>
+
+Implementing this constraint in Rails is easy with validations; to accept microposts with at most 140 characters (à la Twitter), we use a length validation.
+
